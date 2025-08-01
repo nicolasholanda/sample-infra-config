@@ -25,7 +25,7 @@ pipeline {
             steps {
                 dir(env.TOFU_DIR) {
                     withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
-                        sh 'opentofu init'
+                        sh 'tofu init'
                     }
                 }
             }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 dir(env.TOFU_DIR) {
                     withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
-                        sh 'opentofu plan -out=tfplan'
+                        sh 'tofu plan -out=tfplan'
                     }
                 }
             }
@@ -47,7 +47,7 @@ pipeline {
             steps {
                 dir(env.TOFU_DIR) {
                     withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
-                        sh 'opentofu apply -auto-approve tfplan'
+                        sh 'tofu apply -auto-approve tfplan'
                     }
                 }
             }
