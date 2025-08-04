@@ -13,10 +13,11 @@ data "kubernetes_secret" "grafana_admin" {
     name      = "grafana"
     namespace = var.infra_namespace
   }
+  depends_on = [helm_release.grafana]
 }
 
 output "grafana_admin_password" {
-  value       = base64decode(data.kubernetes_secret.grafana_admin.data["admin-password"])
+  value       = try(base64decode(data.kubernetes_secret.grafana_admin.data["admin-password"]), null)
   description = "Grafana admin password"
   sensitive   = true
 }
