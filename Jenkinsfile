@@ -52,7 +52,7 @@ pipeline {
                 dir(env.TOFU_DIR) {
                     withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
                         sh '''
-                            tofu apply -auto-approve -var="kubeconfig_path=$KUBECONFIG" tfplan
+                            tofu apply -auto-approve tfplan
                         '''
                     }
                 }
