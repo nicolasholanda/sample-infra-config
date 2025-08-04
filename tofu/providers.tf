@@ -1,3 +1,13 @@
-provider "kubernetes" {}
+variable "kubeconfig_path" {
+  default = "~/.kube/config"
+}
 
-provider "helm" {}
+provider "kubernetes" {
+  config_path = var.kubeconfig_path
+}
+
+provider "helm" {
+  kubernetes {
+    config_path = var.kubeconfig_path
+  }
+}
