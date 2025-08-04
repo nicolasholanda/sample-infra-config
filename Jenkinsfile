@@ -46,6 +46,16 @@ pipeline {
             }
         }
 
+        stage('Show Plan Details') {
+            agent any
+            steps {
+                dir(env.TOFU_DIR) {
+                    sh 'tofu show tfplan > tfplan.txt'
+                    archiveArtifacts artifacts: 'tfplan.txt', fingerprint: true
+                }
+            }
+        }
+
         stage('OpenTofu Apply') {
             agent any
             steps {
