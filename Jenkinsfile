@@ -24,7 +24,7 @@ pipeline {
             agent any
             steps {
                 dir(env.TOFU_DIR) {
-                    withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
+                    withCredentials([file(credentialsId: env.KUBECONFIG_CREDS_ID, variable: 'KUBECONFIG_PATH')]) {
                         sh '''
                             tofu init
                             tofu apply -auto-approve -var="kubeconfig_path=$KUBECONFIG_PATH"
