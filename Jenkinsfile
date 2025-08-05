@@ -20,49 +20,14 @@ pipeline {
             }
         }
 
-        stage('OpenTofu Init') {
+        stage('Deploy') {
             agent any
             steps {
                 dir(env.TOFU_DIR) {
                     withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
                         sh '''
-                            tofu init -var="kubeconfig_path=$KUBECONFIG"
-                        '''
-                    }
-                }
-            }
-        }
-
-        stage('OpenTofu Plan') {
-            agent any
-            steps {
-                dir(env.TOFU_DIR) {
-                    withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
-                        sh '''
-                            tofu plan -out=tfplan -var="kubeconfig_path=$KUBECONFIG"
-                        '''
-                    }
-                }
-            }
-        }
-
-        stage('Show Plan Details') {
-            agent any
-            steps {
-                dir(env.TOFU_DIR) {
-                    sh 'tofu show tfplan > tfplan.txt'
-                    archiveArtifacts artifacts: 'tfplan.txt', fingerprint: true
-                }
-            }
-        }
-
-        stage('OpenTofu Apply') {
-            agent any
-            steps {
-                dir(env.TOFU_DIR) {
-                    withKubeConfig([credentialsId: env.KUBECONFIG_CREDS_ID]) {
-                        sh '''
-                            tofu apply -auto-approve tfplan
+                            tofu init
+                            tofu apply -auto-approve -var="kubeconfig_path=$KUBECONFIG_PATH"
                         '''
                     }
                 }
