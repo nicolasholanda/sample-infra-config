@@ -4,7 +4,6 @@ pipeline {
     parameters {
         string(name: 'TOFU_DIR', defaultValue: 'tofu', description: 'Directory containing OpenTofu configs')
         string(name: 'KUBECONFIG_CREDS_ID', defaultValue: 'jenkins-kubeconfig', description: 'Kubeconfig credential ID')
-        string(name: 'TOFU_WORKSPACE', defaultValue: '', description: 'Optional workspace override')
     }
 
     environment {
