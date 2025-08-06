@@ -1,3 +1,9 @@
+resource "kubernetes_namespace" "infra" {
+  metadata {
+    name = var.infra_namespace
+  }
+}
+
 resource "helm_release" "prometheus" {
   name       = var.prometheus_release_name
   repository = var.prometheus_chart_repo
