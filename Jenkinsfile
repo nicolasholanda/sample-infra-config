@@ -19,6 +19,14 @@ pipeline {
             }
         }
 
+        stage('Static Tests') {
+            agent any
+            steps {
+                sh 'pip install --user checkov'
+                sh 'checkov -d $TOFU_DIR'
+            }
+        }
+
         stage('Deploy') {
             agent any
             steps {
