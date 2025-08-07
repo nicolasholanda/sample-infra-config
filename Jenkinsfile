@@ -4,6 +4,7 @@ pipeline {
     parameters {
         string(name: 'TOFU_DIR', defaultValue: 'tofu', description: 'Directory containing OpenTofu configs')
         string(name: 'KUBECONFIG_CREDS_ID', defaultValue: 'jenkins-kubeconfig', description: 'Kubeconfig credential ID')
+        string(name: 'PYTHON_VERSION', defaultValue: '3.11', description: 'Python version for testing')
     }
 
     environment {
@@ -20,9 +21,12 @@ pipeline {
         }
 
         stage('Static Tests') {
-            agent any
+            agent {
+                docker { image "python:${params.PYTHON_VERSION}" }
+            }
             steps {
-                sh 'pip install --user checkov'
+                sh 'pip install --upgrade pip'
+                sh 'pip install checkov'
                 sh 'checkov -d $TOFU_DIR'
             }
         }
